@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0B1C3A">
+<title>K1 — Pesquisa de horário</title>
+<style>
+  :root{
+    --navy:#0B1C3A;
+    --red:#C8102E;
+    --bg:#f3f4f6;
+    --card:#fff;
+    --text:#1a1a1a;
+    --muted:#666;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+  header{background:var(--navy);color:#fff;padding:16px 16px 14px;border-bottom:3px solid var(--red);position:sticky;top:0;z-index:10}
+  header .k{font-weight:900;font-size:22px;letter-spacing:.5px}
+  header .k span{color:var(--red)}
+  header p{margin:4px 0 0;font-size:12px;opacity:.85}
+  main{max-width:520px;margin:0 auto;padding:14px 14px 110px}
+  .note{font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.45}
+  .card{background:var(--card);border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+  .card h2{margin:0 0 10px;font-size:15px;color:var(--navy)}
+  .opt{display:flex;align-items:flex-start;gap:10px;padding:10px 8px;border-radius:8px;margin:0 -4px}
+  .opt:active{background:#f0f2f5}
+  .opt input{width:22px;height:22px;margin-top:1px;accent-color:var(--navy);flex-shrink:0}
+  .opt b{display:block;font-size:14px}
+  .opt small{display:block;color:var(--muted);font-size:12px;margin-top:2px;line-height:1.35}
+  .grade{width:100%;border-collapse:collapse;margin-top:8px;font-size:12px}
+  .grade th{text-align:left;background:#0B1C3A;color:#fff;padding:5px 6px;font-weight:600}
+  .grade td{padding:5px 6px;border-bottom:1px solid #ececec}
+  .grade tr:nth-child(even) td{background:#f6f7f9}
+  .grade .alm td{background:#fff4e5}
+  .grade .shi td{background:#ede7f6}
+  label.opt{cursor:pointer}
+  input[type=text], textarea{
+    width:100%;border:1px solid #d5d8de;border-radius:8px;padding:10px 12px;font-size:16px;font-family:inherit
+  }
+  textarea{min-height:72px;resize:vertical}
+  .days{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+  .bar{
+    position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #e5e7eb;
+    padding:10px 14px calc(10px + env(safe-area-inset-bottom));
+  }
+  .bar button{
+    width:100%;max-width:520px;margin:0 auto;display:block;
+    background:var(--navy);color:#fff;border:0;border-radius:10px;
+    padding:14px;font-size:16px;font-weight:700
+  }
+  .ok{background:#ecfdf3;color:#166534;border-radius:8px;padding:8px 10px;font-size:13px;margin-top:8px;display:none}
+</style>
+</head>
+<body>
+<header>
+  <div class="k">K<span>1</span> RACING ARENA</div>
+  <p>Pesquisa de horário · Cadete, Adulto e Shifter</p>
+</header>
+<main>
+  <p class="note">Nada muda agora. Marque o que você usaria. No final, toque em enviar — abre o WhatsApp com a resposta pronta.</p>
+
+  <div class="card">
+    <h2>1. O que você usa no K1?</h2>
+    <label class="opt"><input type="checkbox" name="cat" value="Cadete/Mirim"><span><b>Cadete / Mirim</b></span></label>
+    <label class="opt"><input type="checkbox" name="cat" value="Adulto"><span><b>Kart adulto</b></span></label>
+    <label class="opt"><input type="checkbox" name="cat" value="Shifter"><span><b>Shifter</b></span></label>
+    <label class="opt"><input type="checkbox" name="cat" value="Coach/escolinha"><span><b>Coach / escolinha</b></span></label>
+  </div>
+
+  <div class="card">
+    <h2>2. Qual dia-tipo você usaria?</h2>
+
+    <label class="opt"><input type="checkbox" name="dia" value="A"><span><b>Dia A — mais Cadete</b></span></label>
+    <table class="grade">
+      <tr><th>Início</th><th>Fim</th><th>Pista</th></tr>
+      <tr><td>08:15</td><td>09:15</td><td>Cadete</td></tr>
+      <tr><td>09:15</td><td>11:15</td><td>Adulto</td></tr>
+      <tr><td>11:15</td><td>12:15</td><td>Cadete</td></tr>
+      <tr class="alm"><td>12:15</td><td>13:00</td><td>Almoço</td></tr>
+      <tr><td>13:00</td><td>14:30</td><td>Adulto</td></tr>
+      <tr><td>14:30</td><td>16:00</td><td>Cadete</td></tr>
+      <tr><td>16:00</td><td>17:30</td><td>Adulto</td></tr>
+    </table>
+
+    <label class="opt" style="margin-top:12px"><input type="checkbox" name="dia" value="B"><span><b>Dia B — Cadete no meio</b></span></label>
+    <table class="grade">
+      <tr><th>Início</th><th>Fim</th><th>Pista</th></tr>
+      <tr><td>08:15</td><td>09:45</td><td>Adulto</td></tr>
+      <tr><td>09:45</td><td>10:45</td><td>Cadete</td></tr>
+      <tr><td>10:45</td><td>12:15</td><td>Adulto</td></tr>
+      <tr class="alm"><td>12:15</td><td>13:00</td><td>Almoço</td></tr>
+      <tr><td>13:00</td><td>14:00</td><td>Cadete</td></tr>
+      <tr><td>14:00</td><td>16:30</td><td>Adulto</td></tr>
+      <tr><td>16:30</td><td>17:30</td><td>Cadete</td></tr>
+    </table>
+
+    <label class="opt" style="margin-top:12px"><input type="checkbox" name="dia" value="C"><span><b>Dia C — mais Adulto</b></span></label>
+    <table class="grade">
+      <tr><th>Início</th><th>Fim</th><th>Pista</th></tr>
+      <tr><td>08:15</td><td>11:00</td><td>Adulto</td></tr>
+      <tr><td>11:00</td><td>12:15</td><td>Cadete</td></tr>
+      <tr class="alm"><td>12:15</td><td>13:00</td><td>Almoço</td></tr>
+      <tr><td>13:00</td><td>14:30</td><td>Adulto</td></tr>
+      <tr><td>14:30</td><td>15:45</td><td>Cadete</td></tr>
+      <tr><td>15:45</td><td>17:30</td><td>Adulto</td></tr>
+    </table>
+
+    <label class="opt" style="margin-top:12px"><input type="checkbox" name="dia" value="S"><span><b>Dia Shifter — mínimo 6 karts</b></span></label>
+    <table class="grade">
+      <tr><th>Início</th><th>Fim</th><th>Pista</th></tr>
+      <tr><td>08:15</td><td>09:15</td><td>Cadete</td></tr>
+      <tr class="shi"><td>09:15</td><td>10:30</td><td>Shifter</td></tr>
+      <tr><td>10:30</td><td>12:15</td><td>Adulto</td></tr>
+      <tr class="alm"><td>12:15</td><td>13:00</td><td>Almoço</td></tr>
+      <tr><td>13:00</td><td>14:15</td><td>Cadete</td></tr>
+      <tr class="shi"><td>14:15</td><td>15:30</td><td>Shifter</td></tr>
+      <tr><td>15:30</td><td>17:30</td><td>Adulto</td></tr>
+    </table>
+    <p class="note" style="margin:10px 0 0">Shifter só abre com 6 karts. Sem quórum, o horário vira Adulto.</p>
+  </div>
+
+  <div class="card">
+    <h2>3. Quantos dias por semana viria?</h2>
+    <label class="opt"><input type="radio" name="qtd" value="1"> <span><b>1 dia</b></span></label>
+    <label class="opt"><input type="radio" name="qtd" value="2"> <span><b>2 dias</b></span></label>
+    <label class="opt"><input type="radio" name="qtd" value="3"> <span><b>3 dias</b></span></label>
+    <label class="opt"><input type="radio" name="qtd" value="4+"> <span><b>4 ou mais</b></span></label>
+  </div>
+
+  <div class="card">
+    <h2>4. Tempo ideal de cada bloco Cadete</h2>
+    <label class="opt"><input type="radio" name="dur" value="45 min"> <span><b>45 min</b></span></label>
+    <label class="opt"><input type="radio" name="dur" value="60 min"> <span><b>60 min</b></span></label>
+    <label class="opt"><input type="radio" name="dur" value="75 min"> <span><b>75 min</b></span></label>
+    <label class="opt"><input type="radio" name="dur" value="90 min"> <span><b>90 min</b></span></label>
+    <label class="opt"><input type="radio" name="dur" value="1h45"> <span><b>1h45 (como hoje)</b></span></label>
+  </div>
+
+  <div class="card">
+    <h2>5. Shifter com mínimo de 6 pilotos</h2>
+    <label class="opt"><input type="radio" name="sh" value="fecho o quórum"> <span><b>Eu fecho o quórum</b></span></label>
+    <label class="opt"><input type="radio" name="sh" value="só se já tiver gente"> <span><b>Só se já tiver gente</b></span></label>
+    <label class="opt"><input type="radio" name="sh" value="não corro"> <span><b>Não corro Shifter</b></span></label>
+  </div>
+
+  <div class="card">
+    <h2>6. Quais dias você consegue vir?</h2>
+    <div class="days">
+      <label class="opt"><input type="checkbox" name="semana" value="Ter"><span><b>Ter</b></span></label>
+      <label class="opt"><input type="checkbox" name="semana" value="Qua"><span><b>Qua</b></span></label>
+      <label class="opt"><input type="checkbox" name="semana" value="Qui"><span><b>Qui</b></span></label>
+      <label class="opt"><input type="checkbox" name="semana" value="Sex"><span><b>Sex</b></span></label>
+      <label class="opt"><input type="checkbox" name="semana" value="Sáb"><span><b>Sáb</b></span></label>
+      <label class="opt"><input type="checkbox" name="semana" value="Dom"><span><b>Dom</b></span></label>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>7. Nome / equipe (opcional)</h2>
+    <input type="text" id="nome" placeholder="Ex.: Equipe X — João" autocomplete="name">
+  </div>
+
+  <div class="card">
+    <h2>8. Comentário (opcional)</h2>
+    <textarea id="obs" placeholder=""></textarea>
+    <div class="ok" id="ok">Resposta gravada na planilha da pesquisa.</div>
+  </div>
+</main>
+
+<div class="bar">
+  <button type="button" id="btn" onclick="enviar()">Enviar resposta</button>
+</div>
+
+<script>
+const PLANILHA_URL = 'https://script.google.com/macros/s/AKfycbzPYV4a7eoPaRG4_LHCHuQimY7WGuXRZZQX_HtLDINWZCId7xlTtA19vamZ1-qtHB1RvQ/exec';
+
+function vals(name){
+  return [...document.querySelectorAll('[name="'+name+'"]:checked')].map(i=>i.value);
+}
+function radio(name){
+  const el=document.querySelector('[name="'+name+'"]:checked');
+  return el?el.value:'';
+}
+function payload(){
+  return {
+    action: 'savePesquisa',
+    nome: document.getElementById('nome').value.trim(),
+    categoria: vals('cat').join(', '),
+    dia: vals('dia').join(', '),
+    vezesSemana: radio('qtd'),
+    tempoCadete: radio('dur'),
+    shifter: radio('sh'),
+    diasSemana: vals('semana').join(', '),
+    comentario: document.getElementById('obs').value.trim()
+  };
+}
+async function enviar(){
+  const btn=document.getElementById('btn');
+  const ok=document.getElementById('ok');
+  if(!PLANILHA_URL){
+    ok.style.display='block';
+    ok.style.background='#fff4e5';
+    ok.style.color='#7a4b00';
+    ok.textContent='A planilha ainda não foi ligada. Peça a URL do Apps Script para o Eduardo gravar as respostas.';
+    return;
+  }
+  btn.disabled=true;
+  btn.textContent='Enviando...';
+  try{
+    const pedido=fetch(PLANILHA_URL,{
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(payload())
+    });
+    const timeout=new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),15000));
+    const resp=await Promise.race([pedido,timeout]);
+    const data=await resp.json();
+    if(!data || data.ok===false) throw new Error('falha');
+    ok.style.display='block';
+    ok.style.background='#ecfdf3';
+    ok.style.color='#166534';
+    ok.textContent='Resposta gravada na planilha da pesquisa. Obrigado.';
+    btn.textContent='Enviado';
+  }catch(err){
+    ok.style.display='block';
+    ok.style.background='#fdecec';
+    ok.style.color='#8a1f1f';
+    ok.textContent='Não gravou. Verifique a internet e tente de novo.';
+    btn.disabled=false;
+    btn.textContent='Enviar resposta';
+  }
+}
+</script>
+</body>
+</html>
